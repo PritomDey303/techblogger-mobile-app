@@ -1,35 +1,49 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
+import Footer from "../../components/Footer/Footer";
 
 const Login = () => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <Input
-        placeholder="Email"
-        leftIcon={{ type: "material", name: "email" }}
-        keyboardType="email-address"
-      />
-      <Input
-        placeholder="Password"
-        leftIcon={{ type: "material", name: "lock" }}
-        secureTextEntry
-      />
-      <Button
-        title="Log in"
-        loading={false}
-        loadingProps={{ size: "small", color: "white" }}
-        buttonStyle={{
-          backgroundColor: "#dc3545",
-          borderRadius: 10,
-        }}
-        onPress={() => console.log("aye")}
-      />
+    <ScrollView>
+      <View style={styles.container}>
+        <Input
+          placeholder="Email"
+          leftIcon={{ type: "material", name: "email" }}
+          keyboardType="email-address"
+        />
+        <Input
+          placeholder="Password"
+          leftIcon={{ type: "material", name: "lock" }}
+          secureTextEntry
+        />
+        <Button
+          title="Log in"
+          loading={false}
+          loadingProps={{ size: "small", color: "white" }}
+          buttonStyle={{
+            backgroundColor: "#dc3545",
+            borderRadius: 10,
+          }}
+          onPress={() => {
+            navigation.navigate("Register");
+          }}
+        />
 
-      <Text style={styles.registerLink}>
-        <Text style={styles.text}> Don't have an account?</Text> Register here
-      </Text>
-    </View>
+        <Text style={styles.text}>
+          Already have an account?{" "}
+          <Text
+            style={styles.registerLink}
+            onPress={() => navigation.navigate("Register")}
+          >
+            Register here
+          </Text>
+        </Text>
+      </View>
+      <Footer />
+    </ScrollView>
   );
 };
 
@@ -38,6 +52,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     padding: 16,
+    paddingTop: 170,
+    paddingBottom: 200,
   },
   registerLink: {
     marginTop: 40,
@@ -47,8 +63,9 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "bold",
-
+    textAlign: "center",
     color: "#6c757d",
+    marginTop: 36,
   },
 });
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { FlatList, Image, Text, TouchableHighlight, View } from "react-native";
 import { CategoryList } from "../../Context/CategoryList";
+import Footer from "../../components/Footer/Footer";
 import styles from "../Category/styles";
 
 export default function Category() {
@@ -28,6 +29,7 @@ export default function Category() {
         renderItem={renderCategory}
         keyExtractor={(item) => `${item.id}`}
       />
+      <Footer />
     </View>
   );
 }

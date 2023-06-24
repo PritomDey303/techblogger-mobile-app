@@ -10,6 +10,7 @@ import {
 import { AllPost } from "../../Context/AllPostsContext";
 import BlogCard from "../../components/BlogCard/BlogCard";
 import CategoryHero from "../../components/CategoryHero/CategoryHero";
+import Footer from "../../components/Footer/Footer";
 import Pagination from "../../components/Pagination/Pagination";
 
 const Blogs = () => {
@@ -63,6 +64,7 @@ const Blogs = () => {
           />
         </View>
       )}
+      <Footer />
     </ScrollView>
   );
 };

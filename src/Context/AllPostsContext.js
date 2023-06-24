@@ -36,6 +36,8 @@ const AllPostsContext = ({ children }) => {
       });
   }, [triggerPost]);
 
+  //get po
+
   return (
     <AllPost.Provider
       value={{

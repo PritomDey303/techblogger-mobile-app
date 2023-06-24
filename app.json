@@ -1,32 +1,39 @@
 {
   "expo": {
-    "name": "Instafood",
-    "slug": "instafood-recipes-app",
+    "name": "TechBlogger",
+    "slug": "techblogger",
     "description": "React Native Recipes App Demo. Download source code for free at https://www.instamobile.io . You can also check out the Swift version at https://www.iosapptemplates.com and the Kotlin version at https://www.instakotlin.com .",
     "privacy": "public",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/iconic.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "backgroundColor": "#FFFFFF",
+      "image": "./assets/splash4.jpg",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "overlay": {
+        "backgroundColor": "#FFFFFF",
+        "position": "absolute",
+        "height": "100%",
+        "width": "100%",
+        "zIndex": "111"
+      }
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pritom303.techblogger"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.pritom303.techblogger"
     },
     "web": {
       "favicon": "./assets/favicon.png"

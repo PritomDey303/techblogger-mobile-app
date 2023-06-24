@@ -1,8 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import { formatDistanceToNow } from "date-fns";
 import { enUS } from "date-fns/locale";
 import React from "react";
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 const BlogCard = ({ title, description, category, _id, date }) => {
+  const navigation = useNavigation();
   const postCreatedAt = new Date(date); // Replace with your post's creation date
 
   const timeAgo = formatDistanceToNow(postCreatedAt, { locale: enUS });
@@ -10,7 +12,9 @@ const BlogCard = ({ title, description, category, _id, date }) => {
   return (
     <TouchableHighlight
       underlayColor="transparent"
-      onPress={() => console.log("pressed")}
+      onPress={() => {
+        navigation.navigate("BlogDetails", { _id });
+      }}
     >
       <View style={styles.container}>
         <Text style={styles.title}>
