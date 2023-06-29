@@ -11,11 +11,13 @@ import { AllPost } from "../../Context/AllPostsContext";
 import BlogCard from "../../components/BlogCard/BlogCard";
 import CategoryHero from "../../components/CategoryHero/CategoryHero";
 import Footer from "../../components/Footer/Footer";
+import Loading from "../../components/Loading/Loading";
 import Pagination from "../../components/Pagination/Pagination";
 
 const Blogs = () => {
   const { posts, setPage, page, totalPageNumber, done } = useContext(AllPost);
   const width = Dimensions.get("window").width;
+  const windowHeight = Dimensions.get("window").height;
 
   const renderItem = ({ item }) => (
     <BlogCard
@@ -30,13 +32,9 @@ const Blogs = () => {
   //custom animation
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ minHeight: windowHeight }}>
       {!done ? (
-        <View style={styles.loadingContainer}>
-          <Text>
-            <ActivityIndicator size="large" color="red" />
-          </Text>
-        </View>
+        <Loading />
       ) : (
         <View>
           {/* title */}

@@ -1,9 +1,11 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Card } from "react-native-elements";
 import Footer from "../../components/Footer/Footer";
 
 const BlogDetails = () => {
+  const navigation = useNavigation();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
 

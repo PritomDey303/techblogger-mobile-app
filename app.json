@@ -10,8 +10,8 @@
     "userInterfaceStyle": "light",
     "splash": {
       "backgroundColor": "#FFFFFF",
-      "image": "./assets/splash4.jpg",
-      "resizeMode": "contain",
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
       "overlay": {
         "backgroundColor": "#FFFFFF",
         "position": "absolute",
@@ -30,7 +30,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/iconic.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.pritom303.techblogger"
@@ -40,7 +40,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "0728a1b3-2736-4235-be75-e145c785c5a0"
+        "projectId": "21958b23-b3e4-4f1b-bba2-db3990ae6872"
       }
     }
   }

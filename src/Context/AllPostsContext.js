@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { createContext } from "react";
 export const AllPost = createContext();
@@ -36,26 +36,24 @@ const AllPostsContext = ({ children }) => {
       });
   }, [triggerPost]);
 
-  //get po
+  const postContextValue = useMemo(
+    () => ({
+      posts,
+      setPosts,
+      done,
+      setDone,
+      triggerPost,
+      setTriggerPost,
+      setPage,
+      page,
+      totalPageNumber,
+      limit,
+    }),
+    [posts, done, triggerPost, page, totalPageNumber, limit]
+  );
 
   return (
-    <AllPost.Provider
-      value={{
-        posts,
-        setPosts,
-        done,
-        setDone,
-        triggerPost,
-        setTriggerPost,
-        setPage,
-        page,
-        totalPageNumber,
-
-        limit,
-      }}
-    >
-      {children}
-    </AllPost.Provider>
+    <AllPost.Provider value={postContextValue}>{children}</AllPost.Provider>
   );
 };
 
