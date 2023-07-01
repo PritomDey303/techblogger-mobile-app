@@ -4,7 +4,7 @@ import { enUS } from "date-fns/locale";
 import React from "react";
 import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import { AuthContext } from "../../Context/AuthContext";
-const BlogCard = ({ title, description, category, _id, date }) => {
+const BlogCard = ({ title, description, category, id, date }) => {
   const { authData, loading } = React.useContext(AuthContext);
   const navigation = useNavigation();
   const postCreatedAt = new Date(date); // Replace with your post's creation date
@@ -19,7 +19,7 @@ const BlogCard = ({ title, description, category, _id, date }) => {
       underlayColor="transparent"
       onPress={() => {
         authData.isLoggedIn
-          ? navigation.navigate("BlogDetails", { _id })
+          ? navigation.navigate("BlogDetails", { id: id })
           : navigation.navigate("Login");
       }}
     >

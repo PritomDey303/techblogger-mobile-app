@@ -1,69 +1,127 @@
-import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRoute } from "@react-navigation/native";
+import { format } from "date-fns";
 import React, { useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Card } from "react-native-elements";
+import { AuthContext } from "../../Context/AuthContext";
+import { url } from "../../Context/Url";
 import Footer from "../../components/Footer/Footer";
-
+import Loading from "../../components/Loading/Loading";
+import Comment from "./Comment/Comment";
+import PostComment from "./PostComment/PostComment";
 const BlogDetails = () => {
-  const navigation = useNavigation();
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
+  const { authData } = React.useContext(AuthContext);
+  const route = useRoute();
 
-  const handleCommentSubmit = () => {
-    if (comment) {
-      setComments([...comments, comment]);
-      setComment("");
+  const { id } = route.params;
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState({});
+  // const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [trigger, setTrigger] = useState(true);
+  const [formattedDate, setFormattedDate] = useState("");
+  const windowHeight = Dimensions.get("window").height;
+  //useEffect for fetching post by id
+  React.useEffect(() => {
+    function getPost() {
+      setLoading(true);
+      fetch(`${url}/api/blog/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setData(data.data);
+
+          setComments(data.data.comments);
+          let date = new Date(data.data.createdAt);
+
+          let date2 = format(date, "dd MMMM, yyyy");
+          setFormattedDate(date2);
+
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
     }
+    getPost();
+  }, [trigger]);
+
+  //post comment function
+  const addComment = async (comment) => {
+    const token = await AsyncStorage.getItem("token");
+    console.log(token);
+    fetch(`${url}/api/comment/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        comment: comment,
+        blogid: id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "success") {
+          setTrigger(!trigger);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Card containerStyle={styles.cardContainer}>
-          <Image
-            source={{
-              uri: "https://img.freepik.com/premium-vector/ai-artificial-intelligence-ai-digital-brain-technology-background_41814-515.jpg",
-            }}
-            style={styles.backgroundImage}
-          />
-          <View style={styles.overlay}>
-            <Text style={styles.title}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Accusamus, rem.
-            </Text>
-            <Text style={styles.dateAuthor}>
-              Published on 24th June 2023 by John Doe
-            </Text>
-            <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic
-              temporibus molestiae officiis tempora dolore. In perspiciatis
-              corrupti magnam consequatur a magni, itaque necessitatibus
-              voluptatum quaerat fuga laborum sunt possimus eaque facere dolores
-              dolore voluptas nesciunt tempore ullam ut quibusdam! Quis
-              quibusdam labore, ullam illum temporibus quasi doloribus suscipit
-              dolore laboriosam amet modi ipsa sunt animi recusandae inventore,
-              optio dolorum quas, minima et culpa veritatis obcaecati ipsam.
-              Quia expedita fuga natus veniam recusandae commodi voluptatem,
-              fugit repudiandae assumenda veritatis obcaecati, nesciunt
-              perferendis amet nostrum tempore deleniti ducimus quo. Voluptate
-              ut nesciunt eos aliquid, laborum sed assumenda quibusdam soluta
-              commodi excepturi culpa iusto inventore voluptatem minima quia
-              sint possimus temporibus minus doloribus! Ipsa, dolore doloribus!
-              Qui, rem veniam quas cumque laborum ab odio quasi eum delectus
-              veritatis dolorum fugit ipsam non quia explicabo dolore, eaque
-              ipsum harum. Id laborum itaque maiores autem quidem blanditiis
-              fugiat quam, illum molestiae aut fugit repellat quod accusamus
-              provident, temporibus, a similique sunt fuga deserunt. Quaerat
-              omnis iusto explicabo maiores vitae voluptates ullam culpa quod ea
-              eius corrupti, eaque totam assumenda illo tempora quidem
-              recusandae. Cupiditate, odit. Neque, vero qui ad distinctio
-              ducimus quos ipsam debitis optio aperiam. Laborum expedita
-              consequatur repellendus. Ab fuga odio sequi qui!
-            </Text>
-          </View>
-        </Card>
-      </View>
-      <Footer />
+    <ScrollView contentContainerStyle={{ minHeight: windowHeight }}>
+      {loading ? (
+        <Loading />
+      ) : (
+        <View style={styles.container}>
+          <Card containerStyle={styles.cardContainer}>
+            <Image
+              source={{
+                uri: `${data?.image_url}` || "https://picsum.photos/200/300",
+              }}
+              style={styles.backgroundImage}
+            />
+            <View style={styles.overlay}>
+              <Text style={styles.title}>{data?.title}</Text>
+              <Text style={styles.dateAuthor}>
+                Published on{" "}
+                <Text style={{ color: "white" }}>{formattedDate}</Text> by{" "}
+                <Text style={{ color: "white" }}> {data?.author?.name}</Text>
+              </Text>
+              <Text style={styles.description}>{data?.description}</Text>
+            </View>
+          </Card>
+          <Card containerStyle={styles.commentcardContainer}>
+            {/* //comments */}
+            <View style={styles.commentoverlay}>
+              <Text style={styles.commentsTitle}>Comments</Text>
+              {comments?.map((comment) => (
+                <Comment
+                  key={comment._id}
+                  comment={comment}
+                  setTrigger={setTrigger}
+                  trigger={trigger}
+                />
+              ))}
+              <PostComment addComment={addComment} />
+            </View>
+          </Card>
+
+          <Footer />
+        </View>
+      )}
     </ScrollView>
   );
 };
@@ -137,6 +195,31 @@ const styles = StyleSheet.create({
   },
   postButton: {
     backgroundColor: "#FF0000",
+  },
+  commentsTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    marginTop: 20,
+    marginBottom: 10,
+    paddingBottom: 10,
+    borderBottomColor: "#FFFFFF",
+    borderBottomWidth: 2,
+  },
+  underline: {
+    width: 30,
+    borderBottomColor: "white",
+    borderBottomWidth: 2,
+    marginBottom: 10,
+  },
+  commentoverlay: {
+    padding: 20,
+    backgroundColor: "#dc3545",
+    opacity: 0.9,
+  },
+  commentcardContainer: {
+    borderRadius: 10,
+    overflow: "hidden",
   },
 });
 
