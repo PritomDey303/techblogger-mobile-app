@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Input } from "react-native-elements";
+import { AuthContext } from "../../../Context/AuthContext";
 
 const PostComment = ({ addComment }) => {
   const [commenterName, setCommenterName] = useState("");
   const [comment, setComment] = useState("");
-
+  const { authData } = React.useContext(AuthContext);
   const handleCommenterNameChange = (text) => {
     setCommenterName(text);
   };
@@ -26,7 +27,7 @@ const PostComment = ({ addComment }) => {
   return (
     <View style={styles.container}>
       <Input
-        value="Pritom Dey"
+        value={authData?.user?.name}
         onChangeText={handleCommenterNameChange}
         inputStyle={styles.input}
         inputContainerStyle={styles.inputContainer}

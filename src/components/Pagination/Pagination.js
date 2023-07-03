@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const Pagination = ({ page, setPage, totalPageNumber }) => {
-  const visiblePages = 3; // Number of visible page numbers
+  const visiblePages = 2; // Number of visible page numbers
   const ellipsis = "...";
   const getPageNumbers = () => {
     const totalPages = totalPageNumber;
@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     marginHorizontal: 4,
     borderRadius: 4,
+    color: "#dc3545",
     backgroundColor: "#ffffff",
     shadowColor: "#000000",
     shadowOffset: {
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#000",
+    color: "#dc3545",
   },
   currentButtonText: {
     color: "#fff",

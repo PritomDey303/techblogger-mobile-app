@@ -21,7 +21,7 @@ export default function DrawerContainer(props) {
           }}
         />
         <MenuButton
-          title="Blogs"
+          title="BLOGS"
           source={require("../../../assets/icons/blog.png")}
           onPress={() => {
             navigation.navigate("Blogs");

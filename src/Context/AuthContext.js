@@ -40,6 +40,7 @@ const AuthProvider = ({ children }) => {
               setAuthData({
                 isLoggedIn: true,
                 user: data.user,
+                token: token,
               });
               setLoading(false);
             }
