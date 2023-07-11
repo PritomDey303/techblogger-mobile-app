@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const Pagination = ({ page, setPage, totalPageNumber }) => {
-  const visiblePages = 2; // Number of visible page numbers
+  const visiblePages = 3; // Number of visible page numbers
   const ellipsis = "...";
   const getPageNumbers = () => {
     const totalPages = totalPageNumber;

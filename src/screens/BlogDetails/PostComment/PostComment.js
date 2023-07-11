@@ -2,11 +2,44 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { AuthContext } from "../../../Context/AuthContext";
-
 const PostComment = ({ addComment }) => {
   const [commenterName, setCommenterName] = useState("");
   const [comment, setComment] = useState("");
   const { authData } = React.useContext(AuthContext);
+
+  React.useEffect(() => {
+    const analyzeTextToxicity = async (text) => {
+      const API_KEY = "AIzaSyAJwdcLTH2P88NY-rloO92D-3jq-zKj1IE";
+
+      try {
+        const response = await fetch(
+          "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              comment: { text },
+              requestedAttributes: {
+                TOXICITY: {},
+              },
+              doNotStore: true,
+              key: API_KEY,
+            }),
+          }
+        );
+
+        const data = await response.json();
+
+        console.log(data);
+      } catch (error) {
+        // Handle errors
+        console.error("Error:", error);
+      }
+    };
+    analyzeTextToxicity("fuck you bitch");
+  }, []);
   const handleCommenterNameChange = (text) => {
     setCommenterName(text);
   };

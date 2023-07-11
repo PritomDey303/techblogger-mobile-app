@@ -20,6 +20,7 @@ export default function DrawerContainer(props) {
             navigation.closeDrawer();
           }}
         />
+
         <MenuButton
           title="BLOGS"
           source={require("../../../assets/icons/blog.png")}
@@ -42,6 +43,26 @@ export default function DrawerContainer(props) {
             source={require("../../../assets/icons/register.png")}
             onPress={() => {
               navigation.navigate("Register");
+              navigation.closeDrawer();
+            }}
+          />
+        )}
+        {authData?.isLoggedIn && (
+          <MenuButton
+            title="MANAGE BLOGS"
+            source={require("../../../assets/icons/manageblogs.png")}
+            onPress={() => {
+              navigation.navigate("ManageBlogs");
+              navigation.closeDrawer();
+            }}
+          />
+        )}
+        {authData?.isLoggedIn && (
+          <MenuButton
+            title="POST BLOGS"
+            source={require("../../../assets/icons/postblogs.png")}
+            onPress={() => {
+              navigation.navigate("Blogs");
               navigation.closeDrawer();
             }}
           />

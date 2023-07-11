@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
             if (data?.status === "success") {
               setAuthData({
                 isLoggedIn: true,
-                user: data.user,
+                user: data?.user,
                 token: token,
               });
               setLoading(false);
@@ -75,12 +75,13 @@ const AuthProvider = ({ children }) => {
 
           setAuthData({
             isLoggedIn: true,
-            user: data.user,
+            user: data?.user,
+            token: data?.token,
           });
           setLoading(false);
           setNotification({ message: data.message, type: "success" });
           clearInput();
-          //setLoginTrigger(!loginTrigger);
+          setLoginTrigger(!loginTrigger);
         }
         if (data?.status === "error") {
           setNotification({ message: data.message, type: "error" });

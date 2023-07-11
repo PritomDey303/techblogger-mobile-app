@@ -31,7 +31,14 @@ const BlogDetails = () => {
   const windowHeight = Dimensions.get("window").height;
   const [alreadyRating, setAlreadyRating] = useState(0);
   const [like, setLike] = useState(false);
-  const [givenRating, setGivenRating] = useState(-1);
+  const [ratingNotification, setRatingNotification] = useState(false);
+
+  //useeffect for setting rating notification to false
+  React.useEffect(() => {
+    setTimeout(() => {
+      setRatingNotification(false);
+    }, 3000);
+  }, [ratingNotification]);
 
   //useEffect for fetching post by id
   React.useEffect(() => {
@@ -50,7 +57,6 @@ const BlogDetails = () => {
           setLoading(false);
         })
         .catch((err) => {
-          console.log(err);
           setLoading(false);
         });
     }
@@ -65,7 +71,6 @@ const BlogDetails = () => {
       .then((data) => {
         console.log(data);
         if (data.status === "success") {
-          console.log(data.rating);
           setAlreadyRating(data.rating);
         }
         if (data.rating === 0) {
@@ -80,7 +85,6 @@ const BlogDetails = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data?.like === true) {
           setLike(true);
         } else {
@@ -129,8 +133,8 @@ const BlogDetails = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.status === "success") {
+          setRatingNotification(true);
           setTrigger(!trigger);
         } else {
           console.log("something went wrong");
@@ -153,7 +157,6 @@ const BlogDetails = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.status === "success") {
           //notification("Liked successfully", "success");
           setLike(!like);
@@ -203,6 +206,17 @@ const BlogDetails = () => {
                     handleRating(rating);
                   }}
                 />
+                <Text
+                  style={{
+                    color: "green",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                    marginTop: 10,
+                    marginBottom: 10,
+                  }}
+                >
+                  {ratingNotification ? "Rating submitted" : ""}
+                </Text>
               </View>
               <View style={styles.likeContainer}>
                 {!like ? (

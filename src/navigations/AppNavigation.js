@@ -9,6 +9,7 @@ import Category from "../screens/Category/Category";
 import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 import HomeScreen from "../screens/Home/HomeScreen";
 import Login from "../screens/Login/Login";
+import ManageBlogs from "../screens/ManageBlogs/ManageBlogs";
 import Register from "../screens/Register/Register";
 
 const Stack = createStackNavigator();
@@ -40,6 +41,7 @@ function MainNavigator() {
       ) : (
         <Stack.Screen name="BlogDetails" component={BlogDetails} />
       )}
+      <Stack.Screen name="ManageBlogs" component={ManageBlogs} />
     </Stack.Navigator>
   );
 }
