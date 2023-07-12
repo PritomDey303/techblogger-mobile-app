@@ -9,7 +9,7 @@ const PostComment = ({ addComment }) => {
 
   React.useEffect(() => {
     const analyzeTextToxicity = async (text) => {
-      const API_KEY = "AIzaSyAJwdcLTH2P88NY-rloO92D-3jq-zKj1IE";
+      const API_KEY = "AIzaSyAkefS0C2LZOEYlCw1BTSmMpthAzciFT-A";
 
       try {
         const response = await fetch(

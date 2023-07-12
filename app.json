@@ -10,7 +10,7 @@
     "userInterfaceStyle": "light",
     "splash": {
       "backgroundColor": "#FFFFFF",
-      "image": "./assets/splash.png",
+      "image": "./assets/abc.png",
       "resizeMode": "cover",
       "overlay": {
         "backgroundColor": "#FFFFFF",

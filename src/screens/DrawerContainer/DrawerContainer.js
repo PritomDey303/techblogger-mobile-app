@@ -59,10 +59,10 @@ export default function DrawerContainer(props) {
         )}
         {authData?.isLoggedIn && (
           <MenuButton
-            title="POST BLOGS"
+            title="ADD BLOG"
             source={require("../../../assets/icons/postblogs.png")}
             onPress={() => {
-              navigation.navigate("Blogs");
+              navigation.navigate("AddBlog");
               navigation.closeDrawer();
             }}
           />

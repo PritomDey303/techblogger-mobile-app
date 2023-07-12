@@ -3,9 +3,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { AuthContext } from "../Context/AuthContext";
+import AddBlog from "../screens/AddBlog/AddBlog";
 import BlogDetails from "../screens/BlogDetails/BlogDetails";
 import Blogs from "../screens/Blogs/Blogs";
 import Category from "../screens/Category/Category";
+import CategoryBlogs from "../screens/CategoryBlogs/CategoryBlogs";
 import DrawerContainer from "../screens/DrawerContainer/DrawerContainer";
 import HomeScreen from "../screens/Home/HomeScreen";
 import Login from "../screens/Login/Login";
@@ -42,6 +44,8 @@ function MainNavigator() {
         <Stack.Screen name="BlogDetails" component={BlogDetails} />
       )}
       <Stack.Screen name="ManageBlogs" component={ManageBlogs} />
+      <Stack.Screen name="AddBlog" component={AddBlog} />
+      <Stack.Screen name="CategoryBlogs" component={CategoryBlogs} />
     </Stack.Navigator>
   );
 }

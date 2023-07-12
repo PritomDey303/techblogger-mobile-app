@@ -4,6 +4,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 const Pagination = ({ page, setPage, totalPageNumber }) => {
   const visiblePages = 3; // Number of visible page numbers
   const ellipsis = "...";
+  const maxLength = 4;
   const getPageNumbers = () => {
     const totalPages = totalPageNumber;
     const currentPage = page;
@@ -22,6 +23,11 @@ const Pagination = ({ page, setPage, totalPageNumber }) => {
     if (endPage > totalPages) {
       startPage -= endPage - totalPages;
       endPage = totalPages;
+    }
+
+    //if startPage is still less than 1 after adjusting
+    if (startPage <= 0) {
+      startPage = 1;
     }
 
     if (startPage > 1) {

@@ -1,6 +1,6 @@
 import * as toxicity from "@tensorflow-models/toxicity";
 import { useEffect, useState } from "react";
-const useTextToxicityDetection = () => {
+const useTextToxicityDetectior = () => {
   const [model, setModel] = useState(null);
 
   useEffect(() => {
@@ -29,4 +29,4 @@ const useTextToxicityDetection = () => {
   return { getToxicityScore };
 };
 
-export default useTextToxicityDetection;
+export default useTextToxicityDetectior;

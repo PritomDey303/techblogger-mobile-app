@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     color: "#333333",
     marginTop: 8,
     textTransform: "capitalize",
+    paddingBottom: 10,
   },
   categoriesInfo: {
     marginTop: 3,

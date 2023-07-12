@@ -4,6 +4,7 @@ import { AllPost } from "../../Context/AllPostsContext";
 import { AuthContext } from "../../Context/AuthContext";
 import { url } from "../../Context/Url";
 import CategoryHero from "../../components/CategoryHero/CategoryHero";
+import Footer from "../../components/Footer/Footer";
 import Loading from "../../components/Loading/Loading";
 import ManageBlogCard from "../../components/ManageBlogCard/ManageBlogCard";
 
@@ -60,6 +61,7 @@ const ManageBlogs = () => {
         setLoading(false);
         console.log(data);
         if (data?.status === "success") {
+          alert("Blog deleted successfully");
           setTriggerPost(!triggerPost);
           setTrigger(!trigger);
         }
@@ -77,6 +79,7 @@ const ManageBlogs = () => {
           </View>
         </View>
       )}
+      {!loading && <Footer />}
     </ScrollView>
   );
 };
