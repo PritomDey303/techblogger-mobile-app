@@ -13,7 +13,7 @@ const PostComment = ({ addComment }) => {
   React.useEffect(() => {
     // Call analyzeComment when the debounced comment changes
     if (debouncedComment) {
-      console.log("debouncedComment");
+      //console.log("debouncedComment");
       handleAnalyzingComment(comment);
     }
   }, [debouncedComment]);
@@ -52,7 +52,7 @@ const PostComment = ({ addComment }) => {
         requestOptions
       );
       const data = await response.json();
-      console.log(data.attributeScores);
+      // console.log(data.attributeScores);
       const toxicityScore = data?.attributeScores.TOXICITY.summaryScore.value;
       setToxicityScore(toxicityScore);
     } catch (error) {
@@ -70,7 +70,7 @@ const PostComment = ({ addComment }) => {
     setComment(text);
   };
   const handleAnalyzingComment = async (text) => {
-    console.log(text);
+    // console.log(text);
     await analyzeComment(text);
   };
 
@@ -114,9 +114,11 @@ const PostComment = ({ addComment }) => {
           </Text>
         </View>
       ) : (
-        <Text style={{ color: "green", fontWeight: "bold" }}>
-          Toxicity Level: {(toxicityScore * 100).toFixed(2)}%
-        </Text>
+        comment.trim() !== "" && (
+          <Text style={{ color: "green", fontWeight: "bold" }}>
+            Toxicity Level: {(toxicityScore * 100).toFixed(2)}%
+          </Text>
+        )
       )}
 
       {toxicityScore !== null &&
