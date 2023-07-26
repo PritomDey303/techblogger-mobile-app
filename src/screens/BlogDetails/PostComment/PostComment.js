@@ -1,51 +1,77 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { AuthContext } from "../../../Context/AuthContext";
+import { useDebounce } from "../../../UtilityFunction/useDebounce";
 const PostComment = ({ addComment }) => {
   const [commenterName, setCommenterName] = useState("");
   const [comment, setComment] = useState("");
   const { authData } = React.useContext(AuthContext);
+  const [toxicityScore, setToxicityScore] = React.useState(null);
+  const debouncedComment = useDebounce(comment, 1000);
 
   React.useEffect(() => {
-    const analyzeTextToxicity = async (text) => {
-      const API_KEY = "AIzaSyAkefS0C2LZOEYlCw1BTSmMpthAzciFT-A";
+    // Call analyzeComment when the debounced comment changes
+    if (debouncedComment) {
+      console.log("debouncedComment");
+      handleAnalyzingComment(comment);
+    }
+  }, [debouncedComment]);
+  async function analyzeComment(text) {
+    const perspectiveEndpoint =
+      "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze";
+    const apiKey = "AIzaSyBipGQHpLzFDJOtuNdJpnxc9phM2r_OFz0"; // Replace with your Perspective API key
 
-      try {
-        const response = await fetch(
-          "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              comment: { text },
-              requestedAttributes: {
-                TOXICITY: {},
-              },
-              doNotStore: true,
-              key: API_KEY,
-            }),
-          }
-        );
-
-        const data = await response.json();
-
-        console.log(data);
-      } catch (error) {
-        // Handle errors
-        console.error("Error:", error);
-      }
+    const headers = {
+      "Content-Type": "application/json",
     };
-    analyzeTextToxicity("fuck you bitch");
-  }, []);
+
+    const payload = {
+      comment: {
+        text: text,
+      },
+      languages: ["en"],
+      requestedAttributes: {
+        TOXICITY: {},
+      },
+    };
+
+    const params = {
+      key: apiKey,
+    };
+
+    const requestOptions = {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(payload),
+    };
+
+    try {
+      const response = await fetch(
+        `${perspectiveEndpoint}?key=${apiKey}`,
+        requestOptions
+      );
+      const data = await response.json();
+      console.log(data.attributeScores);
+      const toxicityScore = data?.attributeScores.TOXICITY.summaryScore.value;
+      setToxicityScore(toxicityScore);
+    } catch (error) {
+      console.log("Error analyzing comment:", error);
+
+      return null;
+    }
+  }
+
   const handleCommenterNameChange = (text) => {
     setCommenterName(text);
   };
 
-  const handleCommentChange = (text) => {
+  const handleCommentChange = async (text) => {
     setComment(text);
+  };
+  const handleAnalyzingComment = async (text) => {
+    console.log(text);
+    await analyzeComment(text);
   };
 
   const handleSubmit = async () => {
@@ -54,6 +80,8 @@ const PostComment = ({ addComment }) => {
       await addComment(comment);
       setCommenterName("");
       setComment("");
+    } else {
+      alert("Please enter a comment.");
     }
   };
 
@@ -69,16 +97,46 @@ const PostComment = ({ addComment }) => {
       <Input
         placeholder="Add a comment..."
         value={comment}
+        onFocus={() => {
+          setToxicityScore(null);
+        }}
         onChangeText={handleCommentChange}
         inputStyle={styles.input}
         inputContainerStyle={styles.inputContainer}
       />
-      <Button
-        title="Submit"
-        onPress={() => handleSubmit()}
-        buttonStyle={styles.button}
-        titleStyle={styles.buttonText}
-      />
+      {comment.trim() !== "" &&
+      toxicityScore !== null &&
+      toxicityScore > 0.7 ? (
+        <View>
+          <Text style={{ color: "red", fontWeight: "bold" }}>
+            This comment is toxic. Toxicity Level:{" "}
+            {(toxicityScore * 100).toFixed(2)}%{" "}
+          </Text>
+        </View>
+      ) : (
+        <Text style={{ color: "green", fontWeight: "bold" }}>
+          Toxicity Level: {(toxicityScore * 100).toFixed(2)}%
+        </Text>
+      )}
+
+      {toxicityScore !== null &&
+      toxicityScore > 0.7 &&
+      comment.trim() !== "" ? (
+        <Button
+          title="Submit"
+          disabled
+          onPress={() => handleSubmit()}
+          buttonStyle={styles.button}
+          titleStyle={styles.buttonText}
+        />
+      ) : (
+        <Button
+          title="Submit"
+          onPress={() => handleSubmit()}
+          buttonStyle={styles.button}
+          titleStyle={styles.buttonText}
+        />
+      )}
     </View>
   );
 };

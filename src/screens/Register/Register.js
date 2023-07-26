@@ -76,7 +76,7 @@ const Register = ({ navigation }) => {
   const checkDOB = () => {
     const today = new Date();
     const birthDate = new Date(selectedDate);
-    const age = today.getFullYear() - birthDate.getFullYear();
+    let age = today.getFullYear() - birthDate.getFullYear();
     const month = today.getMonth() - birthDate.getMonth();
 
     if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
